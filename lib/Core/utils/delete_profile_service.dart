@@ -4,18 +4,17 @@ import 'package:eventk/Features/Profille/Data/models/deleteProfile_model.dart';
 import 'package:eventk/helper/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/*Yara❤️*/
 class DeleteProfileService {
   final Api api;
   final String url = 'http://eventk.runasp.net/api/Profile/delete-profile';
-
+  
   DeleteProfileService({required this.api});
 
   Future<DeleteprofileModel> deleteProfile(String oldPassword) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
-
+      
       if (token == null) {
         throw CustomExceptions('User not authorized. Please login again.');
       }
@@ -27,18 +26,16 @@ class DeleteProfileService {
         token: token,
       );
 
-      // Handle empty or invalid response
       if (response == null) {
         throw CustomExceptions('Empty response from server');
       }
 
-      // Check if response contains status
       if (response is! Map<String, dynamic>) {
         throw CustomExceptions('Invalid response format');
       }
 
-      // Handle API response
       if (response['status'] == 'Success') {
+        
         return DeleteprofileModel.fromJson(response);
       } else {
         throw CustomExceptions(

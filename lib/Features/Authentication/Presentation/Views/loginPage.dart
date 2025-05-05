@@ -13,6 +13,7 @@ import 'package:eventk/Features/Authentication/Presentation/Manager/Login_Cubit.
 import 'package:eventk/Features/Authentication/Data/Model/Login_Model.dart';
 import 'package:eventk/Features/Authentication/Presentation/Manager/Login_State.dart';
 import 'package:eventk/Features/Authentication/Presentation/Views/widgets/haveAccount.dart';
+import 'package:eventk/Features/Authentication/Presentation/Views/widgets/skipButton.dart';
 import 'package:eventk/Features/Verification/Presentation/Views/forgetPassword.dart';
 import 'package:eventk/constants.dart';
 import 'package:flutter/material.dart';
@@ -56,65 +57,72 @@ class _LoginPageState extends State<LoginPage> {
         },
         builder: (context, state) {
           return Scaffold(
-            body: ModalProgressHUD(
-              inAsyncCall: isLoading!,
-              progressIndicator: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(kButtonsColor),
-              ),
-              child: Form(
-                key: formKey,
-                child: SizedBox(
-                  width: double.maxFinite,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(padding: EdgeInsets.only(top: 60.h)),
-                        Container(
-                          child: Image.asset(
-                            AssestsImages.logo,
-                            width: 160.w,
-                            height: 160.h,
+            body: Stack(
+              children:[ ModalProgressHUD(
+                inAsyncCall: isLoading!,
+                progressIndicator: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(kButtonsColor),
+                ),
+                child: Form(
+                  key: formKey,
+                  child: SizedBox(
+                    width: double.maxFinite,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(padding: EdgeInsets.only(top: 60.h)),
+                          Container(
+                            child: Image.asset(
+                              AssestsImages.logo,
+                              width: 160.w,
+                              height: 160.h,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Login',
-                          style: Styles.headingText40,
-                        ),
-                        //Padding(padding: EdgeInsets.only(top: 40.h)),
-                        UserNameTextField(
-                            emailCotroller: emailController,
-                            label: 'Email or username'),
-                        Passwordtextfield(
-                          passwordController: passwordController,
-                          label: 'Password',
-                          page: 'Login',
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 10.h)),
-                        ButtonsText(
-                          text: 'Forget password ?',
-                          onPressedCallBack: () =>
-                              Navigator.pushNamed(context, ForgetPassword.id),
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 10.h)),
-                        Buttons(
-                          text: 'Login',
-                          onPressedCallBack: () async {
-                            if (formKey.currentState!.validate()) {
-                              BlocProvider.of<LoginCubit>(context).Login(
-                                  email: emailController.text,
-                                  password: passwordController.text);
-                            }
-                          },
-                        ),
-                        HaveAccount(have: 'Don\'t have', page: 'Signup'),
-                      ],
+                          Text(
+                            'Login',
+                            style: Styles.headingText40,
+                          ),
+                          //Padding(padding: EdgeInsets.only(top: 40.h)),
+                          UserNameTextField(
+                              emailCotroller: emailController,
+                              label: 'Email or username'),
+                          Passwordtextfield(
+                            passwordController: passwordController,
+                            label: 'Password',
+                            page: 'Login',
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 10.h)),
+                          ButtonsText(
+                            text: 'Forget password ?',
+                            onPressedCallBack: () =>
+                                Navigator.pushNamed(context, ForgetPassword.id),
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 10.h)),
+                          Buttons(
+                            text: 'Login',
+                            onPressedCallBack: () async {
+                              if (formKey.currentState!.validate()) {
+                                BlocProvider.of<LoginCubit>(context).Login(
+                                    email: emailController.text,
+                                    password: passwordController.text);
+                              }
+                            },
+                          ),
+                          HaveAccount(have: 'Don\'t have', page: 'Signup'),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
+              Skipbutton()
+            
+
+            ]
             ),
+
           );
         },
       ),

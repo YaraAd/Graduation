@@ -1,25 +1,36 @@
+
 import 'package:dio/dio.dart';
 import 'package:eventk/Core/dataBase/Cache/Cache_Helper.dart';
 import 'package:eventk/Core/Services/get_it_services.dart';
+import 'package:eventk/Core/utils/AuthProvider.dart';
+import 'package:eventk/Core/utils/addInterest_service.dart';
 import 'package:eventk/Core/utils/categories_service.dart';
+import 'package:eventk/Core/utils/deleteInterest_service.dart';
+import 'package:eventk/Core/widgets/SignInRequiredPage.dart';
 import 'package:eventk/Core/widgets/navigationHome.dart';
+import 'package:eventk/Features/Foryou/Presentation/Views/forYouPage.dart';
 import 'package:eventk/Features/Home/Presentation/Manager/category_cubit.dart';
 import 'package:eventk/Features/Home/Presentation/Manager/get_events_cubit.dart';
-import 'package:eventk/Features/Home/Presentation/Manager/get_near_events_cubit.dart';
 import 'package:eventk/Features/Home/Presentation/Manager/organization_cubit.dart';
 import 'package:eventk/Features/Home/Presentation/Views/categoreDeatlis.dart';
 import 'package:eventk/Features/Home/Presentation/Views/homePage.dart';
 import 'package:eventk/Features/Authentication/Presentation/Views/loginPage.dart';
-import 'package:eventk/Features/Authentication/Presentation/Views/signupPage.dart';
+import 'package:eventk/Features/Authentication/Presentation/Views/signupPage.dart'; 
 import 'package:eventk/Features/Home/domain/home_repo.dart';
+import 'package:eventk/Features/Intersted/Presentation/Views/interetedPage.dart';
+import 'package:eventk/Features/Intersted/Presentation/Views/manager/cubits/addInterest_cubit/addInterest_cubit.dart';
+import 'package:eventk/Features/Intersted/Presentation/Views/manager/cubits/deleteInterest_cubit/deleteInterest_cubit.dart';
 import 'package:eventk/Features/Profille/Presentation/Views/changePassword.dart';
 import 'package:eventk/Features/Profille/Presentation/Views/deleteProfile.dart';
 import 'package:eventk/Features/Verification/Presentation/Views/forgetPassword.dart';
 import 'package:eventk/Features/Verification/Presentation/Views/resetPassword.dart';
 import 'package:eventk/constants.dart';
+import 'package:eventk/helper/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+
 
 /*Yara❤️*/
 void main() async {
@@ -27,7 +38,11 @@ void main() async {
   CategoriesService(Dio()).requestForCategories();
   setUpServiceLocator();
   await getIt<CacheHelper>().initSharedPreferences();
-  runApp(MyApp());
+  runApp(MultiBlocProvider(providers: [
+    ChangeNotifierProvider(
+      create: (_) => Authprovider(getIt<CacheHelper>()),
+    )
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -54,6 +69,12 @@ class MyApp extends StatelessWidget {
                 create: (context) =>
                     GetEventsCubit(getIt<HomeRepo>())..GetEvents(''),
               ),
+              BlocProvider(
+              create: (context)=>AddinterestCubit(service: AddinteretsService(api: Api(dio: Dio()))),
+              ),
+              BlocProvider(
+                create: (context)=>DeleteinterestCubit(service: DeleteinterestService(api: Api(dio: Dio()))),
+                )
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -79,6 +100,18 @@ class MyApp extends StatelessWidget {
                 DeleteProfile.id: (context) => DeleteProfile(),
                 ChangePassword.id: (context) => ChangePassword(),
                 CategoreDeatlis.id: (context) => CategoreDeatlis(),
+                
+                FavouritesPage.id: (context) => FavouritesPage(),
+                ForYouPage.id: (context) => ForYouPage(),
+                Signinrequiredpage.id: (context) {
+                  final args = ModalRoute.of(context)!.settings.arguments
+                      as Map<String, String>;
+                  return Signinrequiredpage(
+                    message: args['message'] ?? 'Please sign in.',
+                    title: args['title'] ?? 'Sign In Required',
+                  );
+                },
+                
               },
               home: NavigationHomePage(),
             ));

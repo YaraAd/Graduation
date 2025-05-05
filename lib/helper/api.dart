@@ -61,6 +61,49 @@ class Api {
     }
   }
 
+  Future<dynamic> put({
+    required String url,
+    dynamic body,
+    String? token,
+    bool isFormData = false,
+  }) async {
+    try {
+      Map<String, String> header = {
+        'accept': '*/*',
+        if (!isFormData) 'Content-Type': 'application/json',
+      };
+
+      if (token != null) {
+        header.addAll({
+          'Authorization': 'Bearer $token',
+        });
+      }
+
+      final data = isFormData ? body : jsonEncode(body);
+
+      final response = await dio.put(
+        url,
+        data: data,
+        options: Options(
+          headers: header,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data is Map<String, dynamic>) {
+          return response.data;
+        } else if (response.data is String && response.data.isNotEmpty) {
+          return jsonDecode(response.data);
+        }
+        return response.data;
+      } else {
+        throw Exception('Error in status code ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error in PUT request: $e');
+    }
+  }
+
   Future<dynamic> delete({
     required String url,
     dynamic? body,

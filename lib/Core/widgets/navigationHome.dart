@@ -1,3 +1,5 @@
+import 'package:eventk/Core/utils/AuthProvider.dart';
+import 'package:eventk/Core/widgets/SignInRequiredPage.dart';
 import 'package:eventk/Features/Profille/Presentation/Views/editProfilePage.dart';
 import 'package:eventk/Features/Profille/Presentation/Views/profilePage.dart';
 import 'package:eventk/constants.dart';
@@ -8,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:provider/provider.dart';
+
 
 /* Yara Adel*/
 class NavigationHomePage extends StatefulWidget {
@@ -57,6 +61,25 @@ class _HomePageState extends State<NavigationHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<Authprovider>(context);
+    final List<Widget> pages = [
+      HomePage(),
+      authProvider.isLoggedIn
+          ? FavouritesPage()
+          : Signinrequiredpage(
+              message:
+                  'Interested events will show up here Sign in to access them.',
+              title: "Events that You're Interested In",
+            ),
+      authProvider.isLoggedIn
+          ? ForYouPage()
+          : Signinrequiredpage(
+              message:
+                  'Pick your interests and get personalizes events recommendations.',
+              title: 'Events Specially Curated For You',
+            ),
+      ProfilePage(),
+    ];
     double elevation = (MediaQuery.of(context).size.width < 600) ? 2 : 16;
     return Scaffold(
       bottomNavigationBar: Container(
