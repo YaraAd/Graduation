@@ -3,6 +3,7 @@ import 'package:eventk/Core/Services/get_it_services.dart';
 import 'package:eventk/Core/utils/get_events_service.dart';
 import 'package:eventk/Core/widgets/customErrorWidgets.dart';
 import 'package:eventk/Core/widgets/customLoadingWidgets.dart';
+import 'package:eventk/Features/Event/Presentaion/Views/EventPage.dart';
 import 'package:eventk/Features/Home/Data/model/get_events_model/get_events_model.dart';
 import 'package:eventk/Features/Home/Data/model/get_events_model/item.dart';
 import 'package:eventk/Features/Home/Presentation/Manager/get_events_cubit.dart';
@@ -32,8 +33,19 @@ class Populareventslistview extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   if (index < 5) {
-                    return PopularEvents(
-                      item: items[index],
+                    return GestureDetector(
+                      onTap:() {
+                        Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (_) => EventDetailsPage(eventId: items[index].eventId,),
+  ),
+);
+
+                      },
+                      child: PopularEvents(
+                        item: items[index],
+                      ),
                     );
                   } else {
                     return ShowMoreEvents();
