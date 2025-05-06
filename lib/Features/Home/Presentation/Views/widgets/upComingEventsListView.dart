@@ -55,7 +55,7 @@ class UpComingEventsListView extends StatelessWidget {
                             if (index < 5) {
                               return UpComingEvents(item: items[index]);
                             } else {
-                              return ShowMoreEvents();
+                              return ShowMoreEvents(events:events);
                             }
                           }),
                     ),

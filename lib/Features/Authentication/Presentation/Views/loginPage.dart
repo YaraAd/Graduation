@@ -1,5 +1,4 @@
 import 'package:eventk/Core/Services/get_it_services.dart';
-import 'package:eventk/Core/utils/Login_Service.dart';
 import 'package:eventk/Core/utils/assests.dart';
 import 'package:eventk/Core/utils/styles.dart';
 import 'package:eventk/Core/widgets/FailureScaffold.dart';
@@ -57,8 +56,8 @@ class _LoginPageState extends State<LoginPage> {
         },
         builder: (context, state) {
           return Scaffold(
-            body: Stack(
-              children:[ ModalProgressHUD(
+            body: Stack(children: [
+              ModalProgressHUD(
                 inAsyncCall: isLoading!,
                 progressIndicator: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(kButtonsColor),
@@ -118,11 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Skipbutton()
-            
-
-            ]
-            ),
-
+            ]),
           );
         },
       ),

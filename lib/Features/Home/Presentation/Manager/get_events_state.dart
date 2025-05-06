@@ -1,5 +1,4 @@
 import 'package:eventk/Features/Home/Data/model/get_events_model/get_events_model.dart';
-import 'package:eventk/Features/Home/Data/model/get_events_model/item.dart';
 
 abstract class GetEventsState {}
 
