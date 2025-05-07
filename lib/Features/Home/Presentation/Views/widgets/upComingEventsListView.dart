@@ -66,7 +66,7 @@ class UpComingEventsListView extends StatelessWidget {
                                   },
                                   child: UpComingEvents(item: items[index]));
                             } else {
-                              return ShowMoreEvents();
+                              return ShowMoreEvents(events:events);
                             }
                           }),
                     ),

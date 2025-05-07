@@ -36,6 +36,8 @@ class OrganizationListView extends StatelessWidget {
             valueColor: AlwaysStoppedAnimation<Color>(kButtonsColor),
           ),
           child: ListView.builder(
+                            shrinkWrap: true,
+
             physics: NeverScrollableScrollPhysics(),
             itemCount: 5,
             itemBuilder: (context, index) {
