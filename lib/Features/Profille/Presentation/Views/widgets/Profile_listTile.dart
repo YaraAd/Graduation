@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileListtile extends StatefulWidget {
   final IconData icon;
@@ -14,21 +15,24 @@ class ProfileListtile extends StatefulWidget {
 class _ProfileListtileState extends State<ProfileListtile> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(widget.icon),
-      title: Text(
-        widget.text,
+    return Container(
+     
+      margin: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 9.0), 
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.grey.shade300,
+          width: 2.w,
+        ),
       ),
-      trailing: Icon(Icons.arrow_forward_ios),
-      onTap: widget.onTap,
+      child: ListTile(
+        leading: Icon(widget.icon),
+        title: Text(
+          widget.text,
+        ),
+        trailing: Icon(Icons.arrow_forward_ios),
+        onTap: widget.onTap,
+      ),
     );
   }
 }
-/*
- leading: Icon(Icons.history),
-                  title: Text("Booking History"),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // booking history page
-                  },
-*/

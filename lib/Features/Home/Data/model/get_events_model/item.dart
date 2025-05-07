@@ -4,6 +4,7 @@ class Item {
   String eventName;
   DateTime? startDate;
   String eventPicture;
+  bool? isInterested;
   dynamic longitude;
   dynamic latitude;
 
@@ -14,6 +15,7 @@ class Item {
     required this.eventPicture,
     this.longitude,
     this.latitude,
+    this.isInterested
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
@@ -25,6 +27,7 @@ class Item {
         eventPicture: json['eventPicture'] as String,
         longitude: json['longitude'] as dynamic,
         latitude: json['latitude'] as dynamic,
+        isInterested: json['isInterested']??false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,6 +37,8 @@ class Item {
         'eventPicture': eventPicture,
         'longitude': longitude,
         'latitude': latitude,
+        'isInterested':isInterested
+        
       };
 
   @override

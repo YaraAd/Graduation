@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eventk/Core/utils/assests.dart';
 import 'package:eventk/Core/utils/styles.dart';
 import 'package:eventk/Features/Intersted/Data/models/getInterest_model.dart';
@@ -23,80 +24,86 @@ class _EventCardState extends State<EventCard> {
   Widget build(BuildContext context) {
     final formattedDate = DateFormat('yyyy-MM-dd – kk:mm')
         .format(DateTime.parse(widget.event.startDate));
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 4.h),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Stack(
-                children: [
-                  Container(
+    return  Padding(
+      padding: EdgeInsets.only(left: 15.w, top: 5.h),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: 250.h,
+        ),
+        child: Stack(
+          children: [
+            Stack(
+              children: [
+                SizedBox(
+                  width: 320.w,
+                  height: 250.h,
+                ),
+                Positioned(
+                  bottom: 80.h,
+                  left: 0.w,
+                  child: Container(
+                    height: 170.h,
                     width: 320.w,
-                    height: 300.h,
-                  ),
-                  Positioned(
-                    bottom: 120.h,
-                    left: 0.w,
-                    child: Container(
-                      height: 170.h,
-                      width: 380.w,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage(AssestsImages.backgroundEvents),
-                          //untill back put event photo
-                          // NetworkImage(widget.event.eventPicture),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image:AssetImage(AssestsImages.testImagePopluar),
+                        /*
+                        CachedNetworkImageProvider(
+                          widget.event.eventPicture ??
+                              AssestsImages.testImagePopluar,
+                          errorListener: (err) =>
+                              Image.asset(AssestsImages.testImagePopluar),
                         ),
-                        borderRadius: BorderRadius.circular(15),
+                        */
+                        // image: NetworkImage(widget.item.eventPicture),
                       ),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  Positioned(
-                    bottom: 70.h,
-                    child: Container(
-                      width: 320.w,
-                      height: 75.h,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            bottomRight: Radius.circular(15)),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            formattedDate,
-                            style:
-                                Styles.styleText15.copyWith(color: Colors.blue),
-                          ),
-                          Text(
-                            widget.event.eventName,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: Styles.styleText20,
-                          ),
-                          Text(
-                            'Tahir Square',
-                            style: Styles.styleText15,
-                          ),
-                        ],
-                      ),
+                ),
+                Positioned(
+                  bottom: 30.h,
+                  child: Container(
+                    width: 320.w,
+                    height: 75.h,
+                    // color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15)),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.event.eventName!,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: Styles.styleText20,
+                        ),
+                        Text(
+                           formattedDate,
+                          style:
+                              Styles.styleText15.copyWith(color: Colors.blue),
+                        ),
+                      ],
                     ),
                   ),
-                  Positioned(
-                    left: 265.w,
-                    bottom: 130.h,
-                    child: Container(
-                        width: 35.w,
-                        height: 35.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: const Color.fromARGB(174, 255, 255, 255),
-                        ),
-                        child:
-                            BlocConsumer<AddinterestCubit, AddinterestStates>(
+                ),
+                Positioned(
+                  left: 265.w,
+                  bottom: 90.h,
+                  child: Container(
+                      width: 35.w,
+                      height: 35.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color.fromARGB(174, 255, 255, 255),
+                      ),
+                      child: 
+                       BlocConsumer<AddinterestCubit, AddinterestStates>(
                                 listener: (context, state) {
                           if (state is AddInterestSuccessState) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -108,7 +115,9 @@ class _EventCardState extends State<EventCard> {
                               SnackBar(content: Text(state.errorMessage)),
                             );
                           }
-                        }, builder: (context, state) {
+                        },
+
+                      builder: (context, state) {
                           bool isInterested = widget.event.isInterested;
                           return RiveAnimatedIcon(
                             riveIcon: RiveIcon.star,
@@ -136,8 +145,10 @@ class _EventCardState extends State<EventCard> {
               ),
             ],
           ),
-        ],
+        
       ),
     );
+
+
   }
 }

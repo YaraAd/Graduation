@@ -3,6 +3,7 @@ import 'package:eventk/Core/utils/assests.dart';
 import 'package:eventk/Features/Event/Presentaion/Manager/cubits/eventCubit/eventCubit.dart';
 import 'package:eventk/Features/Event/Presentaion/Manager/cubits/eventCubit/event_states';
 import 'package:eventk/Features/Event/Presentaion/Views/Widgets/InfoTile.dart';
+import 'package:eventk/Features/Event/Presentaion/Views/Widgets/openMap.dart';
 import 'package:eventk/Features/Intersted/Presentation/Views/manager/cubits/addInterest_cubit/addInterest_cubit.dart';
 import 'package:eventk/Features/Intersted/Presentation/Views/manager/cubits/deleteInterest_cubit/deleteInterest_cubit.dart';
 import 'package:eventk/constants.dart';
@@ -30,6 +31,7 @@ class _EventpageBodyState extends State<EventpageBody> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: BlocConsumer<Eventcubit, EventStates>(
         listener: (context, state) {
@@ -40,6 +42,7 @@ class _EventpageBodyState extends State<EventpageBody> {
           }
         },
         builder: (context, state) {
+          
           if (state is EventLoadingState) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is EventLoadedState) {
@@ -53,7 +56,6 @@ class _EventpageBodyState extends State<EventpageBody> {
                 return "Unknown location";
               }
             }
-
             final event = state.event;
             final formatedStaerDate = DateFormat('EEE, dd MMM, yyyy - hh:mm a')
                 .format(DateTime.parse(event.startDate));
@@ -159,28 +161,31 @@ class _EventpageBodyState extends State<EventpageBody> {
                       //get Location from latitude,....
                       
                       
-                      ListTile(
-                        leading:
-                            const Icon(Icons.location_on, color: kButtonsColor),
-                        title: (event.latitude != null &&
-                                event.longitude != null)
-                            ? FutureBuilder<String>(
-                                future: getAddress(
-                                    event.latitude!, event.longitude!),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Text("Loading location...");
-                                  } else if (snapshot.hasError ||
-                                      !snapshot.hasData) {
-                                    return const Text("Location not found");
-                                  } else {
-                                    return Text(snapshot.data!);
-                                  }
-                                },
-                              )
-                            : const Text("Location not available"),
-                      ),
+                     (event.latitude != null && event.longitude != null)
+    ? ListTile(
+        onTap: () async{
+          MapUtils.openMap(event.latitude!,event.longitude!);
+        },
+    
+        leading: const Icon(Icons.location_on, color: kButtonsColor),
+        title: FutureBuilder<String>(
+          future: getAddress(event.latitude!, event.longitude!),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Loading location...");
+            } else if (snapshot.hasError || !snapshot.hasData) {
+              return const Text("Location not found");
+            } else {
+              return Text(snapshot.data!);
+            }
+          },
+        ),
+      )
+    : const ListTile(
+        leading: Icon(Icons.location_on, color: kButtonsColor),
+        title: Text("Location not available"),
+      ),
+
                       
                       Infotile(
                         icon: Icons.people_alt_outlined,

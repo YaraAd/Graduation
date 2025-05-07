@@ -68,6 +68,7 @@ class Interestedbody extends StatelessWidget {
                     final now = DateTime.now();
                     final upcomingEvents = state.interests.where((event) {
                       final date = DateTime.parse(event.startDate);
+                      
                       return date.isAfter(now);
                     }).toList();
                     final pastEvents = state.interests.where((event) {

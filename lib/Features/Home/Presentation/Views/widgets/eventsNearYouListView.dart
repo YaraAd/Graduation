@@ -5,6 +5,7 @@ import 'package:eventk/Core/utils/get_current_position_service.dart';
 import 'package:eventk/Core/utils/styles.dart';
 import 'package:eventk/Core/widgets/customErrorWidgets.dart';
 import 'package:eventk/Core/widgets/customLoadingWidgets.dart';
+import 'package:eventk/Features/Event/Presentaion/Views/EventPage.dart';
 import 'package:eventk/Features/Home/Data/model/get_events_model/get_events_model.dart';
 import 'package:eventk/Features/Home/Data/model/get_events_model/item.dart';
 import 'package:eventk/Features/Home/Presentation/Manager/get_events_cubit.dart';
@@ -74,7 +75,18 @@ class _EventsNearYouListViewState extends State<EventsNearYouListView> {
                         itemCount: items.length,
                         itemBuilder: (context, index) {
                           if (index < 5) {
-                            return EventsNearYou(item: items[index]);
+                            return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => EventDetailsPage(
+                                        eventId: items[index].eventId,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: EventsNearYou(item: items[index]));
                           } else {
                             return ShowMoreEvents();
                           }

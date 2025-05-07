@@ -10,7 +10,6 @@ import 'package:eventk/Features/Home/Presentation/Manager/get_events_cubit.dart'
 import 'package:eventk/Features/Home/Presentation/Manager/get_events_state.dart';
 import 'package:eventk/Features/Home/Presentation/Views/widgets/popularEvents.dart';
 import 'package:eventk/Features/Home/Presentation/Views/widgets/showMoreEvents.dart';
-import 'package:eventk/Features/Home/domain/home_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,14 +33,15 @@ class Populareventslistview extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (index < 5) {
                     return GestureDetector(
-                      onTap:() {
+                      onTap: () {
                         Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (_) => EventDetailsPage(eventId: items[index].eventId,),
-  ),
-);
-
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => EventDetailsPage(
+                              eventId: items[index].eventId,
+                            ),
+                          ),
+                        );
                       },
                       child: PopularEvents(
                         item: items[index],

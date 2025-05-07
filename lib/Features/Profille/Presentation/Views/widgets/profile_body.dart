@@ -73,10 +73,51 @@ class _ProfileBodyState extends State<ProfileBody> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 180.0),
+                
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        Center(
+                          child: Text(
+                            profile != null
+                                ? "${profile.firstName} ${profile.lastName}"
+                                : "Hi, Guest User",
+                            style: TextStyle(
+                                fontSize: 22.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(height: 6.h),
+                        Column(
+                          children: [
+                            Text(
+                              profile?.userName ?? "",
+                              style: Styles.styleText16
+                                  .copyWith(color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
+                        
+                  ]
+                
+                ),
+              ),
+              SizedBox(height: 100.h,),
+              
+             
+              Padding(
+                padding: const EdgeInsets.only(top: 250.0),
                 child: SingleChildScrollView(
-                  child: Column(
+                  child: 
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      /*
                       SizedBox(
                         height: 15.h,
                       ),
@@ -99,6 +140,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                           ),
                         ],
                       ),
+                      */
                       SizedBox(height: 20.h),
                       ProfileListtile(
                         icon: Icons.edit,

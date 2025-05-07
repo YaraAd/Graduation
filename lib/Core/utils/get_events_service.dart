@@ -1,5 +1,6 @@
 /*Yara*/
 import 'package:dio/dio.dart';
+import 'package:eventk/Core/dataBase/Cache/Cache_Helper.dart';
 import 'package:eventk/Core/errors/errorModel.dart';
 import 'package:eventk/Core/errors/exceptions.dart';
 import 'package:eventk/Core/utils/End_Point.dart';
@@ -10,11 +11,18 @@ class GetEventsService {
   GetEventsService(this.dio);
   Future<GetEventsModel> GetEvents(String endPoint) async {
     try {
+      final token=CacheHelper().getDataString(key: 'token');
+      /*
+       if(token==null){
+        throw CustomExceptions('user not authorized , please login again');
+       }
+       */
       Response response = await dio.get(
         EndPoint.baseUrlEvents + EndPoint.getEvents + endPoint,
         options: Options(
           headers: {
             'accept': '*/*',
+            if (token != null) 'Authorization': 'Bearer $token'
           },
           validateStatus: (status) => status! >= 200 && status < 300,
         ),
