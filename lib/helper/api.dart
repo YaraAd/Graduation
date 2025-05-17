@@ -5,8 +5,12 @@ import 'package:dio/dio.dart';
 class Api {
   final Dio dio;
   Api({required this.dio});
-  Future<dynamic> get(
-      {required String url, String? token, Options? options}) async {
+  Future<dynamic> get({
+    required String url,
+    String? token,
+    Options? options,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     try {
       Map<String, String> header = {};
       if (token != null) {
@@ -15,10 +19,13 @@ class Api {
         });
       }
 
-      final response = await dio.get(url,
-          options: Options(
-            headers: header,
-          ));
+      final response = await dio.get(
+        url,
+        options: Options(
+          headers: header,
+        ),
+        queryParameters: queryParameters,
+      );
       if (response.statusCode == 200) {
         print("api is working");
         return response.data;
@@ -51,6 +58,8 @@ class Api {
         ));
     if (response.statusCode == 200) {
       if (response.data is Map<String, dynamic>) {
+        return response.data;
+      } else if (response.data is String) {
         return response.data;
       } else {
         return jsonDecode(response.data);
